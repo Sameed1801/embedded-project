@@ -1,0 +1,106 @@
+import RPi.GPIO as GPIO
+import CLI.mqtt.client as mqtt
+import tkinter.font
+
+from tkinter import *
+
+from gpiozero import LED
+import RPi.GPIO
+RPi.GPIO.setmode(RPi.GPIO.BCM)
+
+import sys
+import requests
+import _thread
+
+
+### HARDWARE DEFINITIONS ###
+led=LED(14)
+led1=LED(15)
+led2=LED(18)
+
+
+GPIO.setnode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+
+
+def Argon_notificatons_procedure():
+    print("Thread starting for Argon Notifications")
+    timer_x=0
+    
+def ledToggle():
+    if led.is_lit:
+        led.off()        
+    else:
+        led.on()
+        
+
+def ledToggle1():
+    if led1.is_lit:
+        led1.off()         
+    else:
+        led1.on()
+        
+
+def ledToggle2():
+    if led2.is_lit:
+        led2.off()      
+    else:
+        led2.on()
+        
+
+def message_function(client, userdata, message):
+    topic= str(message.topic)
+    message=str(message.payload.decode("utf-8"))
+    message.replace("Argon_Log_AC_Test", '')
+
+
+    range_in_centimeters = int(message)
+
+    if  (temperature_in_degree > 27):
+        print("temperature is higher")
+        print("Stopping MQTT Connection Loop")
+        client.loop_stop()
+    
+        _thread.start_new_thread(ledToggle, ())
+        _thread.start_new_thread(Argon_notification_procedure, ())
+    
+    
+        print("restarting MQTT Connection Loop")
+        main()
+    elif:
+        temperature_in_degree < 27 ):            
+        print("temperature is higher")
+        print("Stopping MQTT Connection Loop")
+        client.loop_stop()
+    
+        _thread.start_new_thread(ledToggle1, ())
+        _thread.start_new_thread(Argon_notification_procedure, ())
+    
+    elif:
+        (temperature_in_degree < 25):
+        print("temperature is lower")
+        print("Stopping MQTT Connection Loop")
+        client.loop_stop()
+    
+        _thread.start_new_thread(ledToggle2, ())
+        _thread.start_new_thread(Argon_notification_procedure, ())
+    
+    
+        print("restarting MQTT Connection Loop")
+        main()
+    
+def main():
+    try:
+        argon_client = mqtt.Client("reception_1_mqtt")
+        argon_client.connection("test.mosquitto.org", 1883)
+        argon_client.subscribe("Argon_Log_AC_Test")
+        argon_client.on_message = message_function
+        argon_client.loop_start()
+        
+    except:
+            KeyboardInterrupt()
+            
+            
+            
+main()
