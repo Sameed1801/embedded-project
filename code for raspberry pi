@@ -57,7 +57,7 @@ def message_function(client, userdata, message):
 
     range_in_centimeters = int(message)
 
-    if  (temperature_in_degree > 27):
+    if  (temperature_in_degree >= 27):
         print("temperature is higher")
         print("Stopping MQTT Connection Loop")
         client.loop_stop()
@@ -69,8 +69,8 @@ def message_function(client, userdata, message):
         print("restarting MQTT Connection Loop")
         main()
     elif:
-        temperature_in_degree < 27 ):            
-        print("temperature is higher")
+        (temperature_in_degree = 25 ):            
+        print("temperature is normal")
         print("Stopping MQTT Connection Loop")
         client.loop_stop()
     
