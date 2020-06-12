@@ -46,12 +46,15 @@ void loop() {
     /* Check if any reads failed and exit early (to try again)*/
     if  isnan((temperature)) {
         Serial.println("Failed to read from DHT sensor!");
-        
-    if (temperature < 25) Particle.publish("temperature", "lower", PRIVATE);
-      //if (lightLevel >= 151 && lightLevel < 249) Particle.publish("lightLevel", "medium", PRIVATE);
-    if (temperature >=25) Particle.publish("temperature", "normal", PRIVATE);
-    
+ 
+    // For Higher temperature value
     if (temperature >= 27) Particle.publish("temperature", "higher", PRIVATE);
+ 
+    // For  Normal temperature value
+    if (temperature = 25) Particle.publish("temperature", "normal", PRIVATE);
+ 
+    // For Lower temperature value
+    if (temperature < 25) Particle.publish("temperature", "lower", PRIVATE);    
     
 	return;
 	Particle.publish("temperature", temperature, PRIVATE);
